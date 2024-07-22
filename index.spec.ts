@@ -1,9 +1,9 @@
-import { InternalAxiosRequestConfig } from 'axios';
+import { InternalAxiosRequestConfig, AxiosRequestHeaders } from 'axios';
 import { paramsInterceptor } from './path-to-your-interceptor-file';
 
 describe('paramsInterceptor', () => {
   it('should set lob to SLOCPI if params or entity is undefined', async () => {
-    const requestConfig: InternalAxiosRequestConfig = { headers: {} };
+    const requestConfig: InternalAxiosRequestConfig = { headers: {} as AxiosRequestHeaders };
 
     const result = await paramsInterceptor()(requestConfig);
 
@@ -11,7 +11,7 @@ describe('paramsInterceptor', () => {
   });
 
   it('should set lob to SLOCPI if entity is not slgfi', async () => {
-    const requestConfig: InternalAxiosRequestConfig = { headers: {}, params: { entity: 'other' } };
+    const requestConfig: InternalAxiosRequestConfig = { headers: {} as AxiosRequestHeaders, params: { entity: 'other' } };
 
     const result = await paramsInterceptor()(requestConfig);
 
@@ -19,7 +19,7 @@ describe('paramsInterceptor', () => {
   });
 
   it('should set lob to SLGFI if entity is slgfi', async () => {
-    const requestConfig: InternalAxiosRequestConfig = { headers: {}, params: { entity: 'slgfi' } };
+    const requestConfig: InternalAxiosRequestConfig = { headers: {} as AxiosRequestHeaders, params: { entity: 'slgfi' } };
 
     const result = await paramsInterceptor()(requestConfig);
 
@@ -27,7 +27,7 @@ describe('paramsInterceptor', () => {
   });
 
   it('should set lob to SLGFI if entity is SLGFI (case insensitive)', async () => {
-    const requestConfig: InternalAxiosRequestConfig = { headers: {}, params: { entity: 'SLGFI' } };
+    const requestConfig: InternalAxiosRequestConfig = { headers: {} as AxiosRequestHeaders, params: { entity: 'SLGFI' } };
 
     const result = await paramsInterceptor()(requestConfig);
 
@@ -35,7 +35,7 @@ describe('paramsInterceptor', () => {
   });
 
   it('should preserve existing params and add lob', async () => {
-    const requestConfig: InternalAxiosRequestConfig = { headers: {}, params: { entity: 'slgfi', otherParam: 'test' } };
+    const requestConfig: InternalAxiosRequestConfig = { headers: {} as AxiosRequestHeaders, params: { entity: 'slgfi', otherParam: 'test' } };
 
     const result = await paramsInterceptor()(requestConfig);
 
