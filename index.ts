@@ -4,8 +4,10 @@ export const paramsInterceptor = () => {
   return async (
     requestConfig: InternalAxiosRequestConfig
   ): Promise<InternalAxiosRequestConfig> => {
-    const entity = requestConfig.params?.entity?.toLowerCase() || 'slocpi';
-    requestConfig.params = { ...requestConfig.params, entity, lob: entity === 'slgfi' ? 'SLGFI' : 'SLOCPI' };
+    requestConfig.params = requestConfig.params || {};
+    const entity = requestConfig.params.entity?.toLowerCase() || 'slocpi';
+    requestConfig.params.entity = entity;
+    requestConfig.params.lob = entity === 'slgfi' ? 'SLGFI' : 'SLOCPI';
     return requestConfig;
   };
 };
