@@ -1,5 +1,5 @@
 import { InternalAxiosRequestConfig, AxiosRequestHeaders } from 'axios';
-import { paramsInterceptor } from './path-to-your-interceptor-file';
+import { paramsInterceptor } from './params.interceptor';
 
 describe('paramsInterceptor', () => {
   it('should set lob to SLOCPI if params or entity is undefined', async () => {
@@ -7,7 +7,8 @@ describe('paramsInterceptor', () => {
 
     const result = await paramsInterceptor()(requestConfig);
 
-    expect(result.params).toEqual({ lob: 'SLOCPI' });
+    expect(result.params.lob).toEqual('SLOCPI');
+    expect(result.params.entity).toEqual('slocpi');
   });
 
   it('should set lob to SLOCPI if entity is not slgfi', async () => {
@@ -15,7 +16,8 @@ describe('paramsInterceptor', () => {
 
     const result = await paramsInterceptor()(requestConfig);
 
-    expect(result.params).toEqual({ entity: 'other', lob: 'SLOCPI' });
+    expect(result.params.lob).toEqual('SLOCPI');
+    expect(result.params.entity).toEqual('other');
   });
 
   it('should set lob to SLGFI if entity is slgfi', async () => {
@@ -23,7 +25,8 @@ describe('paramsInterceptor', () => {
 
     const result = await paramsInterceptor()(requestConfig);
 
-    expect(result.params).toEqual({ entity: 'slgfi', lob: 'SLGFI' });
+    expect(result.params.lob).toEqual('SLGFI');
+    expect(result.params.entity).toEqual('slgfi');
   });
 
   it('should set lob to SLGFI if entity is SLGFI (case insensitive)', async () => {
@@ -31,7 +34,8 @@ describe('paramsInterceptor', () => {
 
     const result = await paramsInterceptor()(requestConfig);
 
-    expect(result.params).toEqual({ entity: 'SLGFI', lob: 'SLGFI' });
+    expect(result.params.lob).toEqual('SLGFI');
+    expect(result.params.entity).toEqual('SLGFI');
   });
 
   it('should preserve existing params and add lob', async () => {
@@ -39,6 +43,8 @@ describe('paramsInterceptor', () => {
 
     const result = await paramsInterceptor()(requestConfig);
 
-    expect(result.params).toEqual({ entity: 'slgfi', otherParam: 'test', lob: 'SLGFI' });
+    expect(result.params.lob).toEqual('SLGFI');
+    expect(result.params.entity).toEqual('slgfi');
+    expect(result.params.otherParam).toEqual('test');
   });
 });
